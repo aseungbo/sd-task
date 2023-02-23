@@ -21,9 +21,7 @@ export default function PostCard(props: PostCardProps): JSX.Element {
   return (
     <PostCardStyle href={`/detail/${post.id}`}>
       <SummaryStyle>
-        <p style={{ fontSize: "1.5rem", fontWeight: "700" }}>
-          {post.title ?? "제목이 없습니다."}
-        </p>
+        <p style={{ fontSize: "1.5rem", fontWeight: "700" }}>{post.title}</p>
         <p
           style={{
             color: "#4a5568",

@@ -15,8 +15,8 @@ export default function Detail(props: DetailProps): JSX.Element {
         <HeadBarStyle>
           <span>{`${post?.writer} ${post?.created_at}`}</span>
           <HeadButtonStyle>
-            <button>수정</button>
-            <button>삭제</button>
+            {/* <button>수정</button>
+            <button>삭제</button> */}
           </HeadButtonStyle>
         </HeadBarStyle>
       </HeadStyle>
@@ -29,7 +29,6 @@ const DetailStyle = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #fdfdfd;
 `;
 
 const HeadStyle = styled.div`

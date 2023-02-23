@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Detail from "@/components/templates/Detail";
 import CommentTemplate from "@/components/templates/CommentTemplate";
-import { axiosGetPosts, axiosGetComments } from "@/networks/axios.custom";
+import { axiosGetTargetPost, axiosGetComments } from "@/networks/axios.custom";
 import { Post, Comment } from "@/types/dto/dataType.dto";
 
 interface PageProps {
@@ -18,7 +18,7 @@ export default function page(props: PageProps): JSX.Element {
   const [comments, setComments] = useState<Comment[]>();
 
   useEffect(() => {
-    axiosGetPosts(params.slug)
+    axiosGetTargetPost(params.slug)
       .then((response) => {
         setPost(response.data);
       })
@@ -26,7 +26,7 @@ export default function page(props: PageProps): JSX.Element {
   }, []);
 
   useEffect(() => {
-    axiosGetComments()
+    axiosGetComments(params.slug)
       .then((response) => {
         setComments(response.data);
       })
@@ -36,9 +36,7 @@ export default function page(props: PageProps): JSX.Element {
   return (
     <main>
       <Detail post={post} />
-      <CommentTemplate
-        comments={comments?.filter((comment) => comment.postId === post?.id)}
-      />
+      <CommentTemplate postId={post?.id} comments={comments} />
     </main>
   );
 }

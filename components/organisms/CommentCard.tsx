@@ -11,10 +11,10 @@ export default function CommentCard(props: CommentCardProps): JSX.Element {
   return (
     <CommentCardStyle>
       <HeadStyle>
-        <span>{comment?.writer ?? "anonymous"}</span>
+        <span>{comment.writer}</span>
         <HeadButtonStyle>
-          <button>수정</button>
-          <button>삭제</button>
+          {/* <button>수정</button>
+          <button>삭제</button> */}
         </HeadButtonStyle>
       </HeadStyle>
       <ContentStyle>{comment.content}</ContentStyle>
