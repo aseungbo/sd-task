@@ -1,9 +1,24 @@
 import instance from "./axios.instance";
 
 const axiosGetPostsUrl = "/api/posts/";
-export const axiosGetPosts = async (postId?: number): Promise<any> => {
+export const axiosGetPosts = async (
+  page?: number,
+  limit?: number
+): Promise<any> => {
   try {
-    const response = await instance.get(`${axiosGetPostsUrl}${postId ?? ""}`);
+    const response = await instance.get(
+      `${axiosGetPostsUrl}?_page=${page}&_limit=${limit}`
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const axiosGetTargetPostUrl = "/api/posts/";
+export const axiosGetTargetPost = async (postId: number): Promise<any> => {
+  try {
+    const response = await instance.get(`${axiosGetTargetPostUrl}${postId}`);
     return response;
   } catch (error) {
     throw error;
@@ -11,10 +26,12 @@ export const axiosGetPosts = async (postId?: number): Promise<any> => {
 };
 
 const axiosGetCommentsUrl = "/api/comments/";
-export const axiosGetComments = async (commentId?: number): Promise<any> => {
+export const axiosGetComments = async (postId?: number): Promise<any> => {
   try {
     const response = await instance.get(
-      `${axiosGetCommentsUrl}${commentId ?? ""}`
+      postId
+        ? `${axiosGetCommentsUrl}?postId=${postId}`
+        : `${axiosGetCommentsUrl}`
     );
     return response;
   } catch (error) {

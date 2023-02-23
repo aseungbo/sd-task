@@ -1,14 +1,22 @@
 import Link from "next/link";
 import styled from "@emotion/styled";
+import { useEffect, useState } from "react";
+import { axiosGetComments } from "@/networks/axios.custom";
 import { Post } from "@/types/dto/dataType.dto";
 
 interface PostCardProps {
   post: Post;
-  commentsCnt: number | undefined;
 }
 
 export default function PostCard(props: PostCardProps): JSX.Element {
-  const { post, commentsCnt } = props;
+  const { post } = props;
+  const [commentsCnt, setCommentsCnt] = useState<number>();
+
+  useEffect(() => {
+    axiosGetComments(post.id).then((response) => {
+      setCommentsCnt(response.data.length);
+    });
+  }, []);
 
   return (
     <PostCardStyle href={`/detail/${post.id}`}>
@@ -16,8 +24,16 @@ export default function PostCard(props: PostCardProps): JSX.Element {
         <p style={{ fontSize: "1.5rem", fontWeight: "700" }}>
           {post.title ?? "제목이 없습니다."}
         </p>
-        {/* <p>{post.content}</p> */}
-        <p style={{ color: "#4a5568" }}>content.</p>
+        <p
+          style={{
+            color: "#4a5568",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            height: "5rem",
+          }}
+        >
+          {post.content}
+        </p>
       </SummaryStyle>
       <BottomStyle>
         <p>{post.writer}</p>
