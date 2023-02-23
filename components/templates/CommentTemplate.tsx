@@ -4,17 +4,18 @@ import CommentCard from "../organisms/CommentCard";
 import { Comment } from "@/types/dto/dataType.dto";
 
 interface CommentTemplateProps {
+  postId: number | undefined;
   comments?: Comment[];
 }
 
 export default function CommentTemplate(
   props: CommentTemplateProps
 ): JSX.Element {
-  const { comments } = props;
+  const { postId, comments } = props;
 
   return (
     <CommentTemplateStyle>
-      <CommentForm />
+      <CommentForm postId={postId} />
       {comments?.map((comment) => {
         return <CommentCard key={comment.id} comment={comment} />;
       })}
