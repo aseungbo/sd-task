@@ -3,7 +3,7 @@ import PostCard from "../organisms/PostCard";
 import { Post } from "@/types/dto/dataType.dto";
 
 interface MainProps {
-  posts?: Post[];
+  posts: Post[];
 }
 
 export default function Main(props: MainProps): JSX.Element {
@@ -19,7 +19,6 @@ export default function Main(props: MainProps): JSX.Element {
 }
 
 const MainStyle = styled.section`
-  background-color: #fdfdfd;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
