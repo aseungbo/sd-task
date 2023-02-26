@@ -1,10 +1,12 @@
 import instance from "./axios.instance";
+import { AxiosResponse } from "axios";
+import { Comment, Post } from "@/types/dto/dataType.dto";
 
 const axiosGetPostsUrl = "/api/posts/";
 export const axiosGetPosts = async (
   page?: number,
   limit?: number
-): Promise<any> => {
+): Promise<AxiosResponse<Post[]>> => {
   try {
     const response = await instance.get(
       `${axiosGetPostsUrl}?_page=${page}&_limit=${limit}`
@@ -16,7 +18,9 @@ export const axiosGetPosts = async (
 };
 
 const axiosGetTargetPostUrl = "/api/posts/";
-export const axiosGetTargetPost = async (postId: number): Promise<any> => {
+export const axiosGetTargetPost = async (
+  postId: number
+): Promise<AxiosResponse<Post>> => {
   try {
     const response = await instance.get(`${axiosGetTargetPostUrl}${postId}`);
     return response;
@@ -26,7 +30,9 @@ export const axiosGetTargetPost = async (postId: number): Promise<any> => {
 };
 
 const axiosGetCommentsUrl = "/api/comments/";
-export const axiosGetComments = async (postId?: number): Promise<any> => {
+export const axiosGetComments = async (
+  postId?: number
+): Promise<AxiosResponse<Comment[]>> => {
   try {
     const response = await instance.get(
       postId
@@ -40,9 +46,23 @@ export const axiosGetComments = async (postId?: number): Promise<any> => {
 };
 
 const axiosPostCommentUrl = "/api/comments/";
-export const axiosPostComment = async (data: Object): Promise<any> => {
+export const axiosPostComment = async (
+  data: Object
+): Promise<AxiosResponse<Object>> => {
   try {
     const response = await instance.post(`${axiosPostCommentUrl}`, data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const axiosDeleteCommentUrl = "/api/comments/";
+export const axiosDeleteComment = async (
+  id: number
+): Promise<AxiosResponse> => {
+  try {
+    const response = await instance.delete(`${axiosPostCommentUrl}${id}`);
     return response;
   } catch (error) {
     throw error;

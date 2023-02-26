@@ -1,9 +1,10 @@
 import styled from "@emotion/styled";
 import ViewLimitBox from "../organisms/ViewLimitBox";
+import { SetStateAction, Dispatch } from "react";
 
 interface FilterProps {
   viewLimit: number;
-  setViewLimit: any;
+  setViewLimit: Dispatch<SetStateAction<number>>;
 }
 
 export default function Filter(props: FilterProps): JSX.Element {
