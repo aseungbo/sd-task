@@ -1,9 +1,10 @@
 import styled from "@emotion/styled";
+import { SetStateAction, Dispatch } from "react";
 
 interface PaginationProps {
   totalCount: number;
   page: number;
-  setPage: any;
+  setPage: Dispatch<SetStateAction<number>>;
   viewLimit: number;
 }
 
@@ -11,8 +12,9 @@ export default function Pagination(props: PaginationProps): JSX.Element {
   const { page, setPage, totalCount, viewLimit } = props;
   const offset = Math.floor((page - 1) / 5);
   const maxPage = Math.ceil(totalCount / viewLimit);
-  const handleClick = (e: any) => {
-    const page = parseInt(e.target.innerText);
+  const handleClick = (e: React.MouseEvent<HTMLElement>): void => {
+    const input = e.target as HTMLElement;
+    const page = parseInt(input.innerText);
     setPage(page);
   };
 
@@ -23,7 +25,7 @@ export default function Pagination(props: PaginationProps): JSX.Element {
           &lt;
         </ButtonStyle>
 
-        {Array(5)
+        {Array(maxPage < 5 ? maxPage : 5)
           .fill(0)
           .map((_, i) => {
             return (

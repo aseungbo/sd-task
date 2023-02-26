@@ -1,14 +1,16 @@
 import styled from "@emotion/styled";
+import { SetStateAction, Dispatch } from "react";
 
 interface ViewLimitBoxProps {
   viewLimit: number;
-  setViewLimit: any;
+  setViewLimit: Dispatch<SetStateAction<number>>;
 }
 
 export default function ViewLimitBox(props: ViewLimitBoxProps): JSX.Element {
   const { viewLimit, setViewLimit } = props;
-  const handleChange = (e: any) => {
-    setViewLimit(e.target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    const value = parseInt(e.target.value);
+    setViewLimit(value);
   };
 
   return (
