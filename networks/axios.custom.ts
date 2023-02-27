@@ -60,7 +60,10 @@ export const axiosPatchPost = async (
   data: Object
 ): Promise<AxiosResponse<{}>> => {
   try {
-    const response = await instance.patch(`${axiosPatchPostUrl}${id}`, data);
+    const response = await instance.patch(`${axiosPatchPostUrl}${id}`, {
+      ...data,
+      updated_at: new Date().toISOString(),
+    });
     return response;
   } catch (error) {
     throw error;
@@ -117,7 +120,10 @@ export const axiosPatchComment = async (
   data: Object
 ): Promise<AxiosResponse<{}>> => {
   try {
-    const response = await instance.patch(`${axiosPatchCommentUrl}${id}`, data);
+    const response = await instance.patch(`${axiosPatchCommentUrl}${id}`, {
+      ...data,
+      updated_at: new Date().toISOString(),
+    });
     return response;
   } catch (error) {
     throw error;

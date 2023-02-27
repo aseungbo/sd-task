@@ -1,24 +1,28 @@
 import styled from "@emotion/styled";
 import CommentForm from "../organisms/CommentForm";
 import CommentCard from "../organisms/CommentCard";
+import { useComments } from "@/hooks/useComments";
 import { Comment } from "@/types/dto/dataType.dto";
 
 interface CommentTemplateProps {
-  postId: number | undefined;
-  comments?: Comment[];
+  postId: number;
 }
 
 export default function CommentTemplate(
   props: CommentTemplateProps
 ): JSX.Element {
-  const { postId, comments } = props;
+  const { postId } = props;
+  const { comments, isLoading, isError } = useComments(postId);
 
   return (
     <CommentTemplateStyle>
       <CommentForm postId={postId} />
-      {comments?.map((comment) => {
-        return <CommentCard key={comment.id} comment={comment} />;
-      })}
+      {!isLoading &&
+        comments.map((comment: Comment) => {
+          return (
+            <CommentCard key={comment.id} comment={comment} postId={postId} />
+          );
+        })}
     </CommentTemplateStyle>
   );
 }
