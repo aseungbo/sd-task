@@ -29,6 +29,44 @@ export const axiosGetTargetPost = async (
   }
 };
 
+const axiosPostPostUrl = "/api/posts/";
+export const axiosPostPost = async (
+  data: Object
+): Promise<AxiosResponse<Post>> => {
+  try {
+    const response = await instance.post(`${axiosPostPostUrl}`, data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const axiosDeletePostUrl = "/api/posts/";
+export const axiosDeletePost = async (
+  id: number,
+  data: Object
+): Promise<AxiosResponse<{}>> => {
+  try {
+    const response = await instance.delete(`${axiosDeletePostUrl}${id}`, data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const axiosPatchPostUrl = "/api/posts/";
+export const axiosPatchPost = async (
+  id: number,
+  data: Object
+): Promise<AxiosResponse<{}>> => {
+  try {
+    const response = await instance.patch(`${axiosPatchPostUrl}${id}`, data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const axiosGetCommentsUrl = "/api/comments/";
 export const axiosGetComments = async (
   postId?: number
@@ -59,10 +97,27 @@ export const axiosPostComment = async (
 
 const axiosDeleteCommentUrl = "/api/comments/";
 export const axiosDeleteComment = async (
-  id: number
-): Promise<AxiosResponse> => {
+  id: number,
+  data: Object
+): Promise<AxiosResponse<{}>> => {
   try {
-    const response = await instance.delete(`${axiosPostCommentUrl}${id}`);
+    const response = await instance.delete(
+      `${axiosDeleteCommentUrl}${id}`,
+      data
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const axiosPatchCommentUrl = "/api/comments/";
+export const axiosPatchComment = async (
+  id: number,
+  data: Object
+): Promise<AxiosResponse<{}>> => {
+  try {
+    const response = await instance.patch(`${axiosPatchCommentUrl}${id}`, data);
     return response;
   } catch (error) {
     throw error;

@@ -2,6 +2,7 @@
 
 import styled from "@emotion/styled";
 import Link from "next/link";
+import BaseButton from "../atoms/buttons/BaseButton";
 
 export default function Header(): JSX.Element {
   return (
@@ -9,7 +10,9 @@ export default function Header(): JSX.Element {
       <Link href={"/"}>
         <p style={{ fontSize: "1.5rem", fontWeight: "700" }}>SD Board</p>
       </Link>
-      {/* <button>Create a board</button> */}
+      <Link href={"/write"}>
+        <BaseButton value={"Create a post"} />
+      </Link>
     </HeaderStyle>
   );
 }
