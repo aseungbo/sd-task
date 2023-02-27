@@ -1,49 +1,63 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSWRConfig } from "swr";
 import InputInstance from "../atoms/inputs/InputInstance";
+import BaseButton from "../atoms/buttons/BaseButton";
 import { axiosPostComment } from "@/networks/axios.custom";
-import { Comment } from "@/types/dto/dataType.dto";
+import TextAreaInstance from "../atoms/inputs/TextAreaInstance";
 
 interface CommentFormProps {
-  postId: number | undefined;
+  postId: number;
+  parrent?: number;
 }
 
-/**
- * TODO
- * - 댓글번호를 순차적으로 POST 하는 방법
- * @returns
- */
 export default function CommentForm(props: CommentFormProps): JSX.Element {
-  const { postId } = props;
+  const { postId, parrent } = props;
+  const [writer, setWriter] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [content, setContent] = useState<string>("");
   const [newComment, setNewComment] = useState<Object>({});
+  const { mutate } = useSWRConfig();
 
-  const handleChange = (e: any): void => {
-    const value = e.target.value;
+  useEffect(() => {
     setNewComment((prev) => ({
       ...prev,
-      // id:
       postId: postId,
-      parrent: null,
-      content: value,
-      writer: null,
-      password: "string",
-      // created_at: string; // 작성일자: ISO 8601
-      updated_at: "string",
+      parrent: parrent ?? null,
+      content: content,
+      writer: writer,
+      password: password,
     }));
-  };
+  }, [writer, password, content]);
 
   const handleClick = (): void => {
-    if (newComment)
-      axiosPostComment(newComment)
-        .then((response) => console.log(response))
-        .catch((error) => console.error(error));
+    axiosPostComment(newComment)
+      .then((response) => {
+        mutate(`/api/comments/?postId=${postId}`);
+        console.log(response.data);
+      })
+      .catch((error) => console.error(error));
   };
 
   return (
     <CommentFormStyle>
-      <TextAreaStyle placeholder="댓글을 입력하세요" onChange={handleChange} />
+      <InputInstance
+        value={writer}
+        setValue={setWriter}
+        placeholder={"글쓴이를 입력하세요."}
+      />
+      <InputInstance
+        value={password}
+        setValue={setPassword}
+        placeholder={"비밀번호를 입력하세요."}
+      />
+      <TextAreaInstance
+        value={content}
+        setValue={setContent}
+        placeholder={"내용을 입력하세요"}
+      />
       <ButtonStyle>
-        <button onClick={handleClick}>작성하기</button>
+        <BaseButton value={"작성하기"} handleClick={handleClick} />
       </ButtonStyle>
     </CommentFormStyle>
   );
@@ -51,20 +65,11 @@ export default function CommentForm(props: CommentFormProps): JSX.Element {
 
 const CommentFormStyle = styled.div`
   width: 20rem;
-  height: 5rem;
+  height: 20rem;
   display: flex;
   flex-direction: column;
+  gap: 1rem;
   margin-bottom: 1rem;
-`;
-
-const TextAreaStyle = styled.textarea`
-  padding: 1rem;
-  outline: none;
-  resize: none;
-  border: 1px solid lightgray;
-  border-radius: 0.25rem;
-  min-height: 4rem;
-  font-size: 1rem;
 `;
 
 const ButtonStyle = styled.div`
