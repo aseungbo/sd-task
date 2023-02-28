@@ -56,8 +56,8 @@ pnpm run dev
 │   │   │   ├── head.tsx
 │   │   │   └── page.tsx
 │   │   └── write
-│   │   ├── head.tsx
-│   │   └── page.tsx
+│   │       ├── head.tsx
+│   │       └── page.tsx
 │   ├── globals.css
 │   ├── head.tsx
 │   ├── layout.tsx
@@ -67,8 +67,8 @@ pnpm run dev
 │   │   ├── buttons
 │   │   │   └── BaseButton.tsx
 │   │   └── inputs
-│   │   ├── InputInstance.tsx
-│   │   └── TextAreaInstance.tsx
+│   │       ├── InputInstance.tsx
+│   │       └── TextAreaInstance.tsx
 │   ├── organisms
 │   │   ├── CommentCard.tsx
 │   │   ├── CommentForm.tsx
@@ -81,12 +81,12 @@ pnpm run dev
 │   │   ├── ViewLimitBox.tsx
 │   │   └── WriteForm.tsx
 │   └── templates
-│   ├── CommentTemplate.tsx
-│   ├── Detail.tsx
-│   ├── Footer.tsx
-│   ├── Header.tsx
-│   ├── Main.tsx
-│   └── Write.tsx
+│        ├── CommentTemplate.tsx
+│        ├── Detail.tsx
+│        ├── Footer.tsx
+│        ├── Header.tsx
+│        ├── Main.tsx
+│        └── Write.tsx
 ├── db.json
 ├── hooks
 │   ├── useComments.ts
@@ -109,10 +109,10 @@ pnpm run dev
 ├── tree.txt
 ├── tsconfig.json
 └── types
-├── dto
-│   └── dataType.dto.ts
-└── enum
-└── policy.ts
+      ├── dto
+      │    └── dataType.dto.ts
+      └── enum
+            └── policy.ts
 ```
 
 - `Atomic Design Pattern`을 적용하여 컴포넌트를 역할에 맞게 분리하였습니다.
