@@ -10,12 +10,11 @@ import { useValidPassword } from "@/hooks/useValidPassword";
 
 interface CommentFormProps {
   postId: number;
-  commentsLength: number;
-  parrent?: number;
+  parent?: number;
 }
 
 export default function CommentForm(props: CommentFormProps): JSX.Element {
-  const { postId, commentsLength, parrent } = props;
+  const { postId, parent } = props;
   const [writer, setWriter] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [content, setContent] = useState<string>("");
@@ -27,7 +26,7 @@ export default function CommentForm(props: CommentFormProps): JSX.Element {
     setNewComment((prev) => ({
       ...prev,
       postId: postId,
-      parrent: parrent ?? null,
+      parent: parent ?? null,
       content: content,
       writer: writer,
       password: password,
@@ -40,14 +39,19 @@ export default function CommentForm(props: CommentFormProps): JSX.Element {
       axiosPostComment(newComment)
         .then((response) => {
           if (response.status === 201)
-            mutate(`/api/comments/?postId=${postId}`);
+            mutate(
+              `/api/comments/${
+                parent
+                  ? `?postId=${postId}&parent=${parent}`
+                  : `?postId=${postId}`
+              }`
+            );
         })
         .catch((error) => console.error(error));
   };
 
   return (
     <CommentFormStyle onSubmit={handleClick}>
-      <p style={{ fontWeight: "700" }}>{`${commentsLength}개의 댓글`}</p>
       <InputInstance
         value={writer}
         setValue={setWriter}
@@ -67,7 +71,7 @@ export default function CommentForm(props: CommentFormProps): JSX.Element {
         value={content}
         maxLength={commentPolicy.content}
         setValue={setContent}
-        placeholder={"내용을 입력하세요"}
+        placeholder="댓글을 입력하세요."
       />
       <ButtonStyle>
         <BaseButton theme={"contained"} value={"작성하기"} type={"submit"} />

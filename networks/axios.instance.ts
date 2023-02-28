@@ -7,4 +7,14 @@ const instance = axios.create({
   },
 });
 
+instance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      if (error.response.status === 401) alert("비밀번호가 틀렸습니다.");
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default instance;
