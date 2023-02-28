@@ -7,6 +7,7 @@ import TextAreaInstance from "../atoms/inputs/TextAreaInstance";
 import { axiosPatchPost, axiosDeletePost } from "@/networks/axios.custom";
 import { Post } from "@/types/dto/dataType.dto";
 import { postPolicy } from "@/types/enum/policy";
+import { useValidPassword } from "@/hooks/useValidPassword";
 
 interface DetailCardProps {
   post: Post;
@@ -19,24 +20,29 @@ export default function DetailCard(props: DetailCardProps): JSX.Element {
   const [content, setContent] = useState<string>(post.content);
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [isModify, setIsModify] = useState<boolean>(false);
+  const { isValidPassword } = useValidPassword(password);
   const router = useRouter();
 
-  const handleDelete = () => {
-    axiosDeletePost(post.id, { data: { password: password } })
-      .then((response) => {
-        if (response.status === 200) router.push("/");
-      })
-      .catch((error) => console.error(error));
+  const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (isValidPassword)
+      axiosDeletePost(post.id, { data: { password: password } })
+        .then((response) => {
+          if (response.status === 200) router.push("/");
+        })
+        .catch((error) => console.error(error));
   };
 
-  const handleModify = () => {
-    axiosPatchPost(post.id, {
-      title: title,
-      password: password,
-      content: content,
-    })
-      .then((response) => setIsModify(false))
-      .catch((error) => console.error(error));
+  const handleModify = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (isValidPassword)
+      axiosPatchPost(post.id, {
+        title: title,
+        password: password,
+        content: content,
+      })
+        .then((response) => setIsModify(false))
+        .catch((error) => console.error(error));
   };
 
   return (
@@ -61,26 +67,33 @@ export default function DetailCard(props: DetailCardProps): JSX.Element {
         </HeadButtonStyle>
       </HeadStyle>
       <p>{`${post?.writer}`}</p>
-      <p>{`${post?.created_at.split("T")[0]}`}</p>
+      {post?.updated_at ? (
+        <p>{`${post?.updated_at.split("T")[0]}`}</p>
+      ) : (
+        <p>{`${post?.created_at.split("T")[0]}`}</p>
+      )}
+
       {!isModify && !isDelete && <p>{post.content}</p>}
       {isDelete && (
-        <FormStyle>
+        <FormStyle onSubmit={handleDelete}>
           <InputInstance
             value={password}
             setValue={setPassword}
             placeholder={"비밀번호를 입력하세요."}
+            type={"password"}
+            isValidPassword={isValidPassword}
           />
           <ButtonStyle>
             <BaseButton
               theme={"contained"}
               value={"삭제하기"}
-              handleClick={handleDelete}
+              type={"submit"}
             />
           </ButtonStyle>
         </FormStyle>
       )}
       {isModify && (
-        <FormStyle>
+        <FormStyle onSubmit={handleModify}>
           <InputInstance
             value={title}
             setValue={setTitle}
@@ -92,6 +105,8 @@ export default function DetailCard(props: DetailCardProps): JSX.Element {
             setValue={setPassword}
             maxLength={postPolicy.password}
             placeholder={"비밀번호를 입력하세요."}
+            type={"password"}
+            isValidPassword={isValidPassword}
           />
           <TextAreaInstance
             theme={"post"}
@@ -104,7 +119,7 @@ export default function DetailCard(props: DetailCardProps): JSX.Element {
             <BaseButton
               theme={"contained"}
               value={"수정하기"}
-              handleClick={handleModify}
+              type={"submit"}
             />
           </ButtonStyle>
         </FormStyle>
@@ -133,7 +148,7 @@ const HeadButtonStyle = styled.div`
   display: flex;
 `;
 
-const FormStyle = styled.div`
+const FormStyle = styled.form`
   gap: 0.5rem;
   display: flex;
   flex-direction: column;

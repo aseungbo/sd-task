@@ -7,6 +7,7 @@ import InputInstance from "../atoms/inputs/InputInstance";
 import TextAreaInstance from "../atoms/inputs/TextAreaInstance";
 import { Comment } from "@/types/dto/dataType.dto";
 import { commentPolicy } from "@/types/enum/policy";
+import { useValidPassword } from "@/hooks/useValidPassword";
 
 interface CommentCardProps {
   comment: Comment;
@@ -20,23 +21,28 @@ export default function CommentCard(props: CommentCardProps): JSX.Element {
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [isModify, setIsModify] = useState<boolean>(false);
   const { mutate } = useSWRConfig();
+  const { isValidPassword } = useValidPassword(password);
 
-  const handleDelete = () => {
-    axiosDeleteComment(comment.id, { data: { password: password } })
-      .then((response) => {
-        mutate(`/api/comments/?postId=${postId}`);
-        setIsDelete(false);
-      })
-      .catch((error) => console.error(error));
+  const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (isValidPassword)
+      axiosDeleteComment(comment.id, { data: { password: password } })
+        .then((response) => {
+          mutate(`/api/comments/?postId=${postId}`);
+          setIsDelete(false);
+        })
+        .catch((error) => console.error(error));
   };
 
-  const handleModify = () => {
-    axiosPatchComment(comment.id, { password: password, content: content })
-      .then((response) => {
-        mutate(`/api/comments/?postId=${postId}`);
-        setIsModify(false);
-      })
-      .catch((error) => console.error(error));
+  const handleModify = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (isValidPassword)
+      axiosPatchComment(comment.id, { password: password, content: content })
+        .then((response) => {
+          mutate(`/api/comments/?postId=${postId}`);
+          setIsModify(false);
+        })
+        .catch((error) => console.error(error));
   };
 
   return (
@@ -64,29 +70,34 @@ export default function CommentCard(props: CommentCardProps): JSX.Element {
       </HeadStyle>
       {!isModify && !isDelete && <p>{comment.content}</p>}
       {isDelete && (
-        <FormStyle>
+        <FormStyle onSubmit={handleDelete}>
           <InputInstance
             value={password}
             setValue={setPassword}
             maxLength={commentPolicy.password}
             placeholder={"비밀번호를 입력하세요."}
+            type={"password"}
+            isValidPassword={isValidPassword}
           />
+
           <ButtonStyle>
             <BaseButton
               theme={"contained"}
               value={"삭제하기"}
-              handleClick={handleDelete}
+              type={"submit"}
             />
           </ButtonStyle>
         </FormStyle>
       )}
       {isModify && (
-        <FormStyle>
+        <FormStyle onSubmit={handleModify}>
           <InputInstance
             value={password}
             setValue={setPassword}
             maxLength={commentPolicy.password}
             placeholder={"비밀번호를 입력하세요."}
+            type={"password"}
+            isValidPassword={isValidPassword}
           />
           <TextAreaInstance
             theme={"comment"}
@@ -99,7 +110,7 @@ export default function CommentCard(props: CommentCardProps): JSX.Element {
             <BaseButton
               theme={"contained"}
               value={"수정하기"}
-              handleClick={handleModify}
+              type={"submit"}
             />
           </ButtonStyle>
         </FormStyle>
@@ -129,7 +140,7 @@ const HeadButtonStyle = styled.div`
   display: flex;
 `;
 
-const FormStyle = styled.div`
+const FormStyle = styled.form`
   gap: 0.5rem;
   display: flex;
   flex-direction: column;

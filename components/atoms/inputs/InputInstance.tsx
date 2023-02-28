@@ -6,6 +6,8 @@ interface inputInstanceProps {
   setValue: Dispatch<SetStateAction<string>>;
   maxLength?: number;
   placeholder: string;
+  type?: string;
+  isValidPassword?: boolean;
 }
 
 export default function InputInstance(props: inputInstanceProps): JSX.Element {
@@ -14,12 +16,21 @@ export default function InputInstance(props: inputInstanceProps): JSX.Element {
   };
 
   return (
-    <InputInstanceStyle
-      value={props.value}
-      maxLength={props.maxLength}
-      placeholder={props.placeholder}
-      onChange={handleChange}
-    />
+    <>
+      <InputInstanceStyle
+        value={props.value}
+        maxLength={props.maxLength}
+        placeholder={props.placeholder}
+        onChange={handleChange}
+        type={props.type}
+        autoComplete={props.type === "password" ? "off" : "on"}
+      />
+      {props.type === "password" && props.value && !props.isValidPassword && (
+        <p style={{ fontSize: "0.5rem", color: "red", padding: "0 0.5rem" }}>
+          비밀번호는 영문+숫자+특수기호 16자 이하입니다.
+        </p>
+      )}
+    </>
   );
 }
 
