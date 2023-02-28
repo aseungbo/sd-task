@@ -11,15 +11,15 @@ export default function Header(): JSX.Element {
         <p style={{ fontSize: "1.5rem", fontWeight: "700" }}>SD Board</p>
       </Link>
       <Link href={"/write"}>
-        <BaseButton value={"Create a post"} />
+        <BaseButton theme={"contained"} value={"Create a post"} />
       </Link>
     </HeaderStyle>
   );
 }
 
-const HeaderStyle = styled.div`
-  height: 10vh;
-  padding: 0 3rem;
+const HeaderStyle = styled.header`
+  height: 5vh;
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;

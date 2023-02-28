@@ -1,25 +1,45 @@
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
 interface BaseButtonProps {
-  value: string;
+  theme: string;
   handleClick?: (e: React.MouseEvent<HTMLElement>) => void;
+  value: string;
 }
 
 export default function BaseButton(props: BaseButtonProps): JSX.Element {
   return (
-    <BaseButtonStyle onClick={props.handleClick}>{props.value}</BaseButtonStyle>
+    <BaseButtonStyle theme={props.theme} onClick={props.handleClick}>
+      {props.value}
+    </BaseButtonStyle>
   );
 }
 
 const BaseButtonStyle = styled.button`
   border: 0;
-  border-radius: 0.25rem;
-  width: 6rem;
-  height: 2rem;
-  background-color: #fe713b;
-  color: #ffffff;
   cursor: pointer;
-  &:hover {
-    background-color: #fc8d61;
-  }
+
+  ${(props) =>
+    props.theme === "contained" &&
+    css`
+      width: 8rem;
+      height: 2rem;
+      color: #ffffff;
+      background-color: #fe713b;
+      border-radius: 0.25rem;
+      &:hover {
+        background-color: #fc8d61;
+      }
+    `}
+  ${(props) =>
+    props.theme === "text" &&
+    css`
+      width: 3rem;
+      height: 2rem;
+      color: #4a5568;
+      background-color: transparent;
+      &:hover {
+        border-bottom: 1px solid #4a5568;
+      }
+    `}
 `;

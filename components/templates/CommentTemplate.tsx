@@ -16,7 +16,7 @@ export default function CommentTemplate(
 
   return (
     <CommentTemplateStyle>
-      <CommentForm postId={postId} />
+      <CommentForm postId={postId} commentsLength={comments?.length} />
       {!isLoading &&
         comments.map((comment: Comment) => {
           return (
@@ -28,11 +28,9 @@ export default function CommentTemplate(
 }
 
 const CommentTemplateStyle = styled.section`
+  gap: 3rem;
+  margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 1.5rem;
-  overflow-y: scroll;
-  padding: 2rem;
 `;

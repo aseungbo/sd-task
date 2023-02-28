@@ -20,47 +20,47 @@ export default function Pagination(props: PaginationProps): JSX.Element {
 
   return (
     <PaginationStyle>
-      <>
-        <ButtonStyle onClick={() => setPage(page - 1)} disabled={page === 1}>
-          &lt;
-        </ButtonStyle>
+      <ButtonStyle onClick={() => setPage(page - 1)} disabled={page === 1}>
+        &lt;
+      </ButtonStyle>
 
-        {Array(maxPage < 5 ? maxPage : 5)
-          .fill(0)
-          .map((_, i) => {
-            return (
-              <ButtonStyle
-                key={(i % 5) + 1 + 5 * offset}
-                style={{
-                  color: page === (i % 5) + 1 + 5 * offset ? "red" : "inherit",
-                }}
-                onClick={handleClick}
-              >
-                {(i % 5) + 1 + 5 * offset}
-              </ButtonStyle>
-            );
-          })}
-        <ButtonStyle
-          onClick={() => setPage(page + 1)}
-          disabled={page === maxPage}
-        >
-          &gt;
-        </ButtonStyle>
-      </>
+      {Array(maxPage < 5 ? maxPage : 5)
+        .fill(0)
+        .map((_, i) => {
+          return (
+            <ButtonStyle
+              key={(i % 5) + 1 + 5 * offset}
+              style={{
+                color: page === (i % 5) + 1 + 5 * offset ? "red" : "inherit",
+              }}
+              onClick={handleClick}
+            >
+              {(i % 5) + 1 + 5 * offset}
+            </ButtonStyle>
+          );
+        })}
+      <ButtonStyle
+        onClick={() => setPage(page + 1)}
+        disabled={page === maxPage}
+      >
+        &gt;
+      </ButtonStyle>
     </PaginationStyle>
   );
 }
 
 const PaginationStyle = styled.nav`
-  width: 100%;
   height: 5vh;
+  gap: 0.5rem;
   display: flex;
   justify-content: center;
+  button {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
 `;
 
 const ButtonStyle = styled.button`
-  width: 2rem;
-  height: 3rem;
   background-color: transparent;
   border: 0;
 `;

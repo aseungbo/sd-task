@@ -20,7 +20,9 @@ export default function Filter(props: FilterProps): JSX.Element {
 
 const FilterStyle = styled.section`
   height: 5vh;
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
-  padding: 1rem 5rem;
+  flex-direction: row-reverse;
+  align-items: center;
 `;

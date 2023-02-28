@@ -30,12 +30,11 @@ const ViewLimitBoxStyle = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
 `;
 
 const SelectStyle = styled.select`
   width: 3rem;
-  height: 2rem;
+  height: 1.5rem;
   border-radius: 0.25rem;
   outline: 0;
 `;
