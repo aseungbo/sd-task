@@ -7,6 +7,7 @@ import InputInstance from "../atoms/inputs/InputInstance";
 import BaseButton from "../atoms/buttons/BaseButton";
 import TextAreaInstance from "../atoms/inputs/TextAreaInstance";
 import { axiosPostPost } from "@/networks/axios.custom";
+import { postPolicy } from "@/types/enum/policy";
 
 export default function WriteForm(): JSX.Element {
   const [title, setTitle] = useState<string>("");
@@ -19,24 +20,22 @@ export default function WriteForm(): JSX.Element {
   useEffect(() => {
     setNewPost((prev) => ({
       ...prev,
-      // id: number,
       title: title,
       content: content,
       writer: writer,
       password: password,
-      // created_at: string,
-      updated_at: "string",
     }));
   }, [title, writer, password, content]);
 
   const handleClick = (): void => {
-    axiosPostPost(newPost)
-      .then((response) => {
-        if (response.status === 201) {
-          router.push(`/detail/${response.data.id}`);
-        }
-      })
-      .catch((error) => console.error(error));
+    if (content !== "")
+      axiosPostPost(newPost)
+        .then((response) => {
+          if (response.status === 201) {
+            router.push(`/detail/${response.data.id}`);
+          }
+        })
+        .catch((error) => console.error(error));
   };
 
   return (
@@ -44,41 +43,51 @@ export default function WriteForm(): JSX.Element {
       <InputInstance
         value={title}
         setValue={setTitle}
+        maxLength={postPolicy.title}
         placeholder={"제목을 입력하세요."}
       />
       <InputInstance
         value={writer}
+        maxLength={postPolicy.writer}
         setValue={setWriter}
         placeholder={"글쓴이를 입력하세요."}
       />
       <InputInstance
         value={password}
         setValue={setPassword}
+        maxLength={postPolicy.password}
         placeholder={"비밀번호를 입력하세요."}
       />
       <TextAreaInstance
+        theme={"post"}
         value={content}
+        maxLength={postPolicy.content}
         setValue={setContent}
         placeholder={"내용을 입력하세요"}
       />
       <ButtonStyle>
-        <BaseButton value={"작성하기"} handleClick={handleClick} />
+        <BaseButton
+          theme={"contained"}
+          value={"작성하기"}
+          handleClick={handleClick}
+        />
       </ButtonStyle>
     </WrtieFormStyle>
   );
 }
 
 const WrtieFormStyle = styled.div`
-  width: 20rem;
-  height: 20rem;
+  width: 48rem;
+  gap: 0.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin: 5rem 0;
+
+  @media screen and (max-width: 768px) {
+    width: 20rem;
+  }
 `;
 
 const ButtonStyle = styled.div`
-  height: 1rem;
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;

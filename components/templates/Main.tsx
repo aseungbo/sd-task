@@ -19,10 +19,10 @@ export default function Main(props: MainProps): JSX.Element {
 }
 
 const MainStyle = styled.section`
+  gap: 1rem;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
   overflow-y: scroll;
-  padding: 2rem;
 `;

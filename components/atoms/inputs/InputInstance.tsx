@@ -4,6 +4,7 @@ import { SetStateAction, Dispatch } from "react";
 interface inputInstanceProps {
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
+  maxLength?: number;
   placeholder: string;
 }
 
@@ -15,8 +16,9 @@ export default function InputInstance(props: inputInstanceProps): JSX.Element {
   return (
     <InputInstanceStyle
       value={props.value}
-      onChange={handleChange}
+      maxLength={props.maxLength}
       placeholder={props.placeholder}
+      onChange={handleChange}
     />
   );
 }

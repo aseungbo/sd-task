@@ -1,17 +1,11 @@
 "use client";
 
-import styled from "@emotion/styled";
-import WriteForm from "@/components/organisms/WriteForm";
+import Write from "@/components/templates/Write";
 
 export default function page(): JSX.Element {
   return (
-    <MainStyle>
-      <WriteForm />
-    </MainStyle>
+    <main>
+      <Write />
+    </main>
   );
 }
-
-const MainStyle = styled.main`
-  display: flex;
-  justify-content: center;
-`;

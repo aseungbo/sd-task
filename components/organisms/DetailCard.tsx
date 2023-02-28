@@ -1,50 +1,48 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
-import { useSWRConfig } from "swr";
-import { axiosPatchComment, axiosDeleteComment } from "@/networks/axios.custom";
+import { useRouter } from "next/navigation";
 import BaseButton from "../atoms/buttons/BaseButton";
 import InputInstance from "../atoms/inputs/InputInstance";
 import TextAreaInstance from "../atoms/inputs/TextAreaInstance";
-import { Comment } from "@/types/dto/dataType.dto";
-import { commentPolicy } from "@/types/enum/policy";
+import { axiosPatchPost, axiosDeletePost } from "@/networks/axios.custom";
+import { Post } from "@/types/dto/dataType.dto";
+import { postPolicy } from "@/types/enum/policy";
 
-interface CommentCardProps {
-  comment: Comment;
-  postId: number;
+interface DetailCardProps {
+  post: Post;
 }
 
-export default function CommentCard(props: CommentCardProps): JSX.Element {
-  const { comment, postId } = props;
+export default function DetailCard(props: DetailCardProps): JSX.Element {
+  const { post } = props;
+  const [title, setTitle] = useState<string>(post.title);
   const [password, setPassword] = useState<string>("");
-  const [content, setContent] = useState<string>(comment.content);
+  const [content, setContent] = useState<string>(post.content);
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [isModify, setIsModify] = useState<boolean>(false);
-  const { mutate } = useSWRConfig();
+  const router = useRouter();
 
   const handleDelete = () => {
-    axiosDeleteComment(comment.id, { data: { password: password } })
+    axiosDeletePost(post.id, { data: { password: password } })
       .then((response) => {
-        mutate(`/api/comments/?postId=${postId}`);
-        setIsDelete(false);
+        if (response.status === 200) router.push("/");
       })
       .catch((error) => console.error(error));
   };
 
   const handleModify = () => {
-    axiosPatchComment(comment.id, { password: password, content: content })
-      .then((response) => {
-        mutate(`/api/comments/?postId=${postId}`);
-        setIsModify(false);
-      })
+    axiosPatchPost(post.id, {
+      title: title,
+      password: password,
+      content: content,
+    })
+      .then((response) => setIsModify(false))
       .catch((error) => console.error(error));
   };
 
   return (
-    <CommentCardStyle>
+    <DetailCardStyle>
       <HeadStyle>
-        <span style={{ fontSize: "1rem", fontWeight: "700" }}>
-          {comment.writer}
-        </span>
+        <h1>{post?.title}</h1>
         <HeadButtonStyle>
           <BaseButton
             theme={"text"}
@@ -62,13 +60,14 @@ export default function CommentCard(props: CommentCardProps): JSX.Element {
           />
         </HeadButtonStyle>
       </HeadStyle>
-      {!isModify && !isDelete && <p>{comment.content}</p>}
+      <p>{`${post?.writer}`}</p>
+      <p>{`${post?.created_at.split("T")[0]}`}</p>
+      {!isModify && !isDelete && <p>{post.content}</p>}
       {isDelete && (
         <FormStyle>
           <InputInstance
             value={password}
             setValue={setPassword}
-            maxLength={commentPolicy.password}
             placeholder={"비밀번호를 입력하세요."}
           />
           <ButtonStyle>
@@ -83,17 +82,23 @@ export default function CommentCard(props: CommentCardProps): JSX.Element {
       {isModify && (
         <FormStyle>
           <InputInstance
+            value={title}
+            setValue={setTitle}
+            maxLength={postPolicy.title}
+            placeholder={"제목을 입력하세요."}
+          />
+          <InputInstance
             value={password}
             setValue={setPassword}
-            maxLength={commentPolicy.password}
+            maxLength={postPolicy.password}
             placeholder={"비밀번호를 입력하세요."}
           />
           <TextAreaInstance
-            theme={"comment"}
+            theme={"post"}
             value={content}
-            maxLength={commentPolicy.content}
             setValue={setContent}
-            placeholder="내용을 입력하세요."
+            maxLength={postPolicy.content}
+            placeholder={"내용을 입력하세요."}
           />
           <ButtonStyle>
             <BaseButton
@@ -104,11 +109,11 @@ export default function CommentCard(props: CommentCardProps): JSX.Element {
           </ButtonStyle>
         </FormStyle>
       )}
-    </CommentCardStyle>
+    </DetailCardStyle>
   );
 }
 
-const CommentCardStyle = styled.div`
+const DetailCardStyle = styled.div`
   width: 48rem;
   gap: 1rem;
   display: flex;
@@ -122,7 +127,6 @@ const CommentCardStyle = styled.div`
 const HeadStyle = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
 `;
 
 const HeadButtonStyle = styled.div`

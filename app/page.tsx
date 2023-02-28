@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import Filter from "@/components/templates/Filter";
 import Main from "@/components/templates/Main";
+import Pagination from "@/components/templates/Pagination";
 import { axiosGetPosts } from "@/networks/axios.custom";
 import { Post } from "@/types/dto/dataType.dto";
-import Pagination from "@/components/organisms/Pagination";
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
