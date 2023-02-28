@@ -1,24 +1,44 @@
 import styled from "@emotion/styled";
+import { useState } from "react";
 import PostCard from "../organisms/PostCard";
 import { Post } from "@/types/dto/dataType.dto";
+import { usePosts } from "@/hooks/usePosts";
+import Filter from "../organisms/Filter";
+import Pagination from "../organisms/Pagination";
 
-interface MainProps {
-  posts: Post[];
-}
-
-export default function Main(props: MainProps): JSX.Element {
-  const { posts } = props;
+export default function Main(): JSX.Element {
+  const [page, setPage] = useState<number>(1);
+  const [viewLimit, setViewLimit] = useState<number>(10);
+  const { posts, totalCount, isLoading, isError } = usePosts({
+    page: page,
+    viewLimit: viewLimit,
+  });
 
   return (
     <MainStyle>
-      {posts?.map((post) => {
-        return <PostCard key={post.id} post={post} />;
-      })}
+      <Filter viewLimit={viewLimit} setViewLimit={setViewLimit} />
+      <PostCardStyle>
+        {posts?.map((post: Post) => {
+          return <PostCard key={post.id} post={post} />;
+        })}
+      </PostCardStyle>
+      <Pagination
+        page={page}
+        maxPage={Math.ceil(totalCount / viewLimit)}
+        setPage={setPage}
+      />
     </MainStyle>
   );
 }
 
 const MainStyle = styled.section`
+  padding: 1rem 2rem;
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+`;
+
+const PostCardStyle = styled.div`
   gap: 1rem;
   display: flex;
   justify-content: center;
