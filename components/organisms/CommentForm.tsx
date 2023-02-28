@@ -38,7 +38,10 @@ export default function CommentForm(props: CommentFormProps): JSX.Element {
     if (isValidPassword)
       axiosPostComment(newComment)
         .then((response) => {
-          if (response.status === 201)
+          if (response.status === 201) {
+            setWriter("");
+            setPassword("");
+            setContent("");
             mutate(
               `/api/comments/${
                 parent
@@ -46,6 +49,7 @@ export default function CommentForm(props: CommentFormProps): JSX.Element {
                   : `?postId=${postId}`
               }`
             );
+          }
         })
         .catch((error) => console.error(error));
   };
