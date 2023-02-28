@@ -1,10 +1,11 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
-import PostCard from "../organisms/PostCard";
-import { Post } from "@/types/dto/dataType.dto";
-import { usePosts } from "@/hooks/usePosts";
 import Filter from "../organisms/Filter";
+import PostCard from "../organisms/PostCard";
+import Spinner from "../organisms/Spinner";
 import Pagination from "../organisms/Pagination";
+import { usePosts } from "@/hooks/usePosts";
+import { Post } from "@/types/dto/dataType.dto";
 
 export default function Main(): JSX.Element {
   const [page, setPage] = useState<number>(1);
@@ -14,6 +15,7 @@ export default function Main(): JSX.Element {
     viewLimit: viewLimit,
   });
 
+  if (isLoading) return <Spinner />;
   return (
     <MainStyle>
       <Filter viewLimit={viewLimit} setViewLimit={setViewLimit} />

@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import axios from "axios";
 
-const fetcher = (...args) => axios.get(...args).then((res) => res.data);
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const axiosGetCommentsUrl = "/api/comments/";
 export function useComments(postId?: number) {
