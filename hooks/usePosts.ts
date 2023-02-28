@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import axios from "axios";
 
-const fetcher = (...args) => axios.get(...args).then((res) => res);
+const fetcher = (url: string) => axios.get(url).then((res) => res);
 
 interface usePostsProps {
   postId?: number;

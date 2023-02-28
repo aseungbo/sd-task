@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import Spinner from "../organisms/Spinner";
 import DetailCard from "../organisms/DetailCard";
 import { usePosts } from "@/hooks/usePosts";
 
@@ -9,7 +10,8 @@ interface DetailProps {
 export default function Detail(props: DetailProps): JSX.Element {
   const { posts, isLoading, isError } = usePosts({ postId: props.postId });
 
-  return <DetailStyle>{!isLoading && <DetailCard post={posts} />}</DetailStyle>;
+  if (isLoading) return <Spinner />;
+  return <DetailStyle>{<DetailCard post={posts} />}</DetailStyle>;
 }
 
 const DetailStyle = styled.section`

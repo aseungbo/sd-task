@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styled from "@emotion/styled";
+import Spinner from "./Spinner";
 import { useComments } from "@/hooks/useComments";
 import { Post } from "@/types/dto/dataType.dto";
 
@@ -11,6 +12,7 @@ export default function PostCard(props: PostCardProps): JSX.Element {
   const { post } = props;
   const { comments, isLoading, isError } = useComments(post.id);
 
+  if (isLoading) return <Spinner />;
   return (
     <PostCardStyle href={`/detail/${post.id}`}>
       <SummaryStyle>
@@ -25,7 +27,7 @@ export default function PostCard(props: PostCardProps): JSX.Element {
       </SummaryStyle>
       <BottomStyle>
         <p>{post.writer}</p>
-        <p style={{ color: "#4a5568" }}>{`${comments?.length} comments`}</p>
+        <p style={{ color: "#4a5568" }}>{`${comments.length} comments`}</p>
       </BottomStyle>
     </PostCardStyle>
   );

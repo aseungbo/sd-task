@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import Spinner from "../organisms/Spinner";
 import CommentForm from "../organisms/CommentForm";
 import CommentCard from "../organisms/CommentCard";
 import { useComments } from "@/hooks/useComments";
@@ -14,15 +15,15 @@ export default function CommentTemplate(
   const { postId } = props;
   const { comments, isLoading, isError } = useComments(postId);
 
+  if (isLoading) return <Spinner />;
   return (
     <CommentTemplateStyle>
-      <CommentForm postId={postId} commentsLength={comments?.length} />
-      {!isLoading &&
-        comments.map((comment: Comment) => {
-          return (
-            <CommentCard key={comment.id} comment={comment} postId={postId} />
-          );
-        })}
+      <CommentForm postId={postId} commentsLength={comments.length} />
+      {comments.map((comment: Comment) => {
+        return (
+          <CommentCard key={comment.id} comment={comment} postId={postId} />
+        );
+      })}
     </CommentTemplateStyle>
   );
 }
