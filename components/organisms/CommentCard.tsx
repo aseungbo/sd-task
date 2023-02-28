@@ -1,13 +1,13 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
-import { axiosPatchComment, axiosDeleteComment } from "@/networks/axios.custom";
 import BaseButton from "../atoms/buttons/BaseButton";
 import InputInstance from "../atoms/inputs/InputInstance";
 import TextAreaInstance from "../atoms/inputs/TextAreaInstance";
+import { useValidPassword } from "@/hooks/useValidPassword";
+import { axiosPatchComment, axiosDeleteComment } from "@/networks/axios.custom";
 import { Comment } from "@/types/dto/dataType.dto";
 import { commentPolicy } from "@/types/enum/policy";
-import { useValidPassword } from "@/hooks/useValidPassword";
 
 interface CommentCardProps {
   comment: Comment;

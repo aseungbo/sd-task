@@ -4,9 +4,9 @@ import { useSWRConfig } from "swr";
 import InputInstance from "../atoms/inputs/InputInstance";
 import BaseButton from "../atoms/buttons/BaseButton";
 import TextAreaInstance from "../atoms/inputs/TextAreaInstance";
+import { useValidPassword } from "@/hooks/useValidPassword";
 import { axiosPostComment } from "@/networks/axios.custom";
 import { commentPolicy } from "@/types/enum/policy";
-import { useValidPassword } from "@/hooks/useValidPassword";
 
 interface CommentFormProps {
   postId: number;
@@ -39,9 +39,6 @@ export default function CommentForm(props: CommentFormProps): JSX.Element {
       axiosPostComment(newComment)
         .then((response) => {
           if (response.status === 201) {
-            setWriter("");
-            setPassword("");
-            setContent("");
             mutate(
               `/api/comments/${
                 parent

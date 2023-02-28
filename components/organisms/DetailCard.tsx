@@ -5,10 +5,10 @@ import { useSWRConfig } from "swr";
 import BaseButton from "../atoms/buttons/BaseButton";
 import InputInstance from "../atoms/inputs/InputInstance";
 import TextAreaInstance from "../atoms/inputs/TextAreaInstance";
+import { useValidPassword } from "@/hooks/useValidPassword";
 import { axiosPatchPost, axiosDeletePost } from "@/networks/axios.custom";
 import { Post } from "@/types/dto/dataType.dto";
 import { postPolicy } from "@/types/enum/policy";
-import { useValidPassword } from "@/hooks/useValidPassword";
 
 interface DetailCardProps {
   post: Post;

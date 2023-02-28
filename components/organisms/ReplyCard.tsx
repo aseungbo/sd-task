@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
+import BaseButton from "../atoms/buttons/BaseButton";
 import CommentCard from "./CommentCard";
 import CommentForm from "./CommentForm";
 import { Comment } from "@/types/dto/dataType.dto";
-import BaseButton from "../atoms/buttons/BaseButton";
 import { useComments } from "@/hooks/useComments";
 import Spinner from "./Spinner";
 

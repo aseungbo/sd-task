@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
-import ViewLimitBox from "./ViewLimitBox";
 import { SetStateAction, Dispatch } from "react";
+import ViewLimitBox from "./ViewLimitBox";
 
 interface FilterProps {
   viewLimit: number;
