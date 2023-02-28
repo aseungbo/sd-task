@@ -2,16 +2,15 @@ import styled from "@emotion/styled";
 import { SetStateAction, Dispatch } from "react";
 
 interface PaginationProps {
-  totalCount: number;
   page: number;
+  maxPage: number;
   setPage: Dispatch<SetStateAction<number>>;
-  viewLimit: number;
 }
 
 export default function Pagination(props: PaginationProps): JSX.Element {
-  const { page, setPage, totalCount, viewLimit } = props;
+  const { page, maxPage, setPage } = props;
   const offset = Math.floor((page - 1) / 5);
-  const maxPage = Math.ceil(totalCount / viewLimit);
+
   const handleClick = (e: React.MouseEvent<HTMLElement>): void => {
     const input = e.target as HTMLElement;
     const page = parseInt(input.innerText);
@@ -50,7 +49,6 @@ export default function Pagination(props: PaginationProps): JSX.Element {
 }
 
 const PaginationStyle = styled.nav`
-  height: 5vh;
   gap: 0.5rem;
   display: flex;
   justify-content: center;

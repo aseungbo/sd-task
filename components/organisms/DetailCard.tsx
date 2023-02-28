@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSWRConfig } from "swr";
 import BaseButton from "../atoms/buttons/BaseButton";
 import InputInstance from "../atoms/inputs/InputInstance";
 import TextAreaInstance from "../atoms/inputs/TextAreaInstance";
@@ -21,6 +22,7 @@ export default function DetailCard(props: DetailCardProps): JSX.Element {
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [isModify, setIsModify] = useState<boolean>(false);
   const { isValidPassword } = useValidPassword(password);
+  const { mutate } = useSWRConfig();
   const router = useRouter();
 
   const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
@@ -28,7 +30,9 @@ export default function DetailCard(props: DetailCardProps): JSX.Element {
     if (isValidPassword)
       axiosDeletePost(post.id, { data: { password: password } })
         .then((response) => {
-          if (response.status === 200) router.push("/");
+          if (response.status === 200) {
+            router.push("/");
+          }
         })
         .catch((error) => console.error(error));
   };
@@ -41,7 +45,10 @@ export default function DetailCard(props: DetailCardProps): JSX.Element {
         password: password,
         content: content,
       })
-        .then((response) => setIsModify(false))
+        .then((response) => {
+          setIsModify(false);
+          mutate(`/api/posts/${post.id}`);
+        })
         .catch((error) => console.error(error));
   };
 
@@ -73,7 +80,9 @@ export default function DetailCard(props: DetailCardProps): JSX.Element {
         <p>{`${post?.created_at.split("T")[0]}`}</p>
       )}
 
-      {!isModify && !isDelete && <p>{post.content}</p>}
+      {!isModify && !isDelete && (
+        <p style={{ wordWrap: "break-word" }}>{post.content}</p>
+      )}
       {isDelete && (
         <FormStyle onSubmit={handleDelete}>
           <InputInstance

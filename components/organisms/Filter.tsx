@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import ViewLimitBox from "../organisms/ViewLimitBox";
+import ViewLimitBox from "./ViewLimitBox";
 import { SetStateAction, Dispatch } from "react";
 
 interface FilterProps {
@@ -18,11 +18,8 @@ export default function Filter(props: FilterProps): JSX.Element {
   );
 }
 
-const FilterStyle = styled.section`
-  height: 5vh;
-  padding: 1rem 2rem;
+const FilterStyle = styled.div`
   display: flex;
-  justify-content: space-between;
   flex-direction: row-reverse;
-  align-items: center;
+  justify-content: space-between;
 `;
