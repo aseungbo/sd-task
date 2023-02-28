@@ -104,7 +104,7 @@ export default function CommentCard(props: CommentCardProps): JSX.Element {
             value={content}
             maxLength={commentPolicy.content}
             setValue={setContent}
-            placeholder="내용을 입력하세요."
+            placeholder="댓글을 입력하세요."
           />
           <ButtonStyle>
             <BaseButton

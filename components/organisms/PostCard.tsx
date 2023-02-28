@@ -2,7 +2,7 @@ import Link from "next/link";
 import styled from "@emotion/styled";
 import Spinner from "./Spinner";
 import { useComments } from "@/hooks/useComments";
-import { Post } from "@/types/dto/dataType.dto";
+import { Post, Comment } from "@/types/dto/dataType.dto";
 
 interface PostCardProps {
   post: Post;
@@ -27,7 +27,9 @@ export default function PostCard(props: PostCardProps): JSX.Element {
       </SummaryStyle>
       <BottomStyle>
         <p>{post.writer}</p>
-        <p style={{ color: "#4a5568" }}>{`${comments.length} comments`}</p>
+        <p style={{ color: "#4a5568" }}>{`${
+          comments.filter((comment: Comment) => comment.parent === null).length
+        } comments`}</p>
       </BottomStyle>
     </PostCardStyle>
   );

@@ -47,4 +47,15 @@ const BaseButtonStyle = styled.button`
         border-bottom: 1px solid #4a5568;
       }
     `}
+    ${(props) =>
+    props.theme === "reply" &&
+    css`
+      width: 5rem;
+      height: 2rem;
+      font-weight: 700;
+      color: #fe713b;
+      background-color: transparent;
+      &:hover {
+      }
+    `}
 `;

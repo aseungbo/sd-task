@@ -4,6 +4,7 @@ import CommentForm from "../organisms/CommentForm";
 import CommentCard from "../organisms/CommentCard";
 import { useComments } from "@/hooks/useComments";
 import { Comment } from "@/types/dto/dataType.dto";
+import ReplyCard from "../organisms/ReplyCard";
 
 interface CommentTemplateProps {
   postId: number;
@@ -18,12 +19,17 @@ export default function CommentTemplate(
   if (isLoading) return <Spinner />;
   return (
     <CommentTemplateStyle>
-      <CommentForm postId={postId} commentsLength={comments.length} />
-      {comments.map((comment: Comment) => {
-        return (
-          <CommentCard key={comment.id} comment={comment} postId={postId} />
-        );
-      })}
+      <CommentForm postId={postId} />
+      {comments
+        .filter((comment: Comment) => comment.parent === null)
+        .map((comment: Comment) => {
+          return (
+            <CommentDivStyle key={comment.id}>
+              <CommentCard comment={comment} postId={postId} />
+              <ReplyCard commentId={comment.id} postId={postId} />
+            </CommentDivStyle>
+          );
+        })}
     </CommentTemplateStyle>
   );
 }
@@ -34,4 +40,10 @@ const CommentTemplateStyle = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const CommentDivStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 `;
