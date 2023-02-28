@@ -6,6 +6,7 @@ import BaseButton from "../atoms/buttons/BaseButton";
 import TextAreaInstance from "../atoms/inputs/TextAreaInstance";
 import { axiosPostComment } from "@/networks/axios.custom";
 import { commentPolicy } from "@/types/enum/policy";
+import { useValidPassword } from "@/hooks/useValidPassword";
 
 interface CommentFormProps {
   postId: number;
@@ -20,6 +21,7 @@ export default function CommentForm(props: CommentFormProps): JSX.Element {
   const [content, setContent] = useState<string>("");
   const [newComment, setNewComment] = useState<Object>({});
   const { mutate } = useSWRConfig();
+  const { isValidPassword } = useValidPassword(password);
 
   useEffect(() => {
     setNewComment((prev) => ({
@@ -32,17 +34,19 @@ export default function CommentForm(props: CommentFormProps): JSX.Element {
     }));
   }, [writer, password, content]);
 
-  const handleClick = (): void => {
-    if (content !== "")
+  const handleClick = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    if (isValidPassword)
       axiosPostComment(newComment)
         .then((response) => {
-          mutate(`/api/comments/?postId=${postId}`);
+          if (response.status === 201)
+            mutate(`/api/comments/?postId=${postId}`);
         })
         .catch((error) => console.error(error));
   };
 
   return (
-    <CommentFormStyle>
+    <CommentFormStyle onSubmit={handleClick}>
       <p style={{ fontWeight: "700" }}>{`${commentsLength}개의 댓글`}</p>
       <InputInstance
         value={writer}
@@ -55,6 +59,8 @@ export default function CommentForm(props: CommentFormProps): JSX.Element {
         setValue={setPassword}
         maxLength={commentPolicy.password}
         placeholder={"비밀번호를 입력하세요."}
+        type={"password"}
+        isValidPassword={isValidPassword}
       />
       <TextAreaInstance
         theme={"comment"}
@@ -64,17 +70,13 @@ export default function CommentForm(props: CommentFormProps): JSX.Element {
         placeholder={"내용을 입력하세요"}
       />
       <ButtonStyle>
-        <BaseButton
-          theme={"contained"}
-          value={"작성하기"}
-          handleClick={handleClick}
-        />
+        <BaseButton theme={"contained"} value={"작성하기"} type={"submit"} />
       </ButtonStyle>
     </CommentFormStyle>
   );
 }
 
-const CommentFormStyle = styled.div`
+const CommentFormStyle = styled.form`
   width: 48rem;
   gap: 0.5rem;
   display: flex;

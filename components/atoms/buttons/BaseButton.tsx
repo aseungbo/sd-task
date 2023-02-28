@@ -5,11 +5,16 @@ interface BaseButtonProps {
   theme: string;
   handleClick?: (e: React.MouseEvent<HTMLElement>) => void;
   value: string;
+  type?: "button" | "submit" | "reset";
 }
 
 export default function BaseButton(props: BaseButtonProps): JSX.Element {
   return (
-    <BaseButtonStyle theme={props.theme} onClick={props.handleClick}>
+    <BaseButtonStyle
+      theme={props.theme}
+      onClick={props.handleClick}
+      type={props.type}
+    >
       {props.value}
     </BaseButtonStyle>
   );

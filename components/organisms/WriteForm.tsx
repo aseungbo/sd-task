@@ -8,6 +8,7 @@ import BaseButton from "../atoms/buttons/BaseButton";
 import TextAreaInstance from "../atoms/inputs/TextAreaInstance";
 import { axiosPostPost } from "@/networks/axios.custom";
 import { postPolicy } from "@/types/enum/policy";
+import { useValidPassword } from "@/hooks/useValidPassword";
 
 export default function WriteForm(): JSX.Element {
   const [title, setTitle] = useState<string>("");
@@ -16,6 +17,7 @@ export default function WriteForm(): JSX.Element {
   const [content, setContent] = useState<string>("");
   const [newPost, setNewPost] = useState<Object>({});
   const router = useRouter();
+  const { isValidPassword } = useValidPassword(password);
 
   useEffect(() => {
     setNewPost((prev) => ({
@@ -27,8 +29,9 @@ export default function WriteForm(): JSX.Element {
     }));
   }, [title, writer, password, content]);
 
-  const handleClick = (): void => {
-    if (content !== "")
+  const handleClick = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    if (isValidPassword)
       axiosPostPost(newPost)
         .then((response) => {
           if (response.status === 201) {
@@ -39,7 +42,7 @@ export default function WriteForm(): JSX.Element {
   };
 
   return (
-    <WrtieFormStyle>
+    <WrtieFormStyle onSubmit={handleClick}>
       <InputInstance
         value={title}
         setValue={setTitle}
@@ -57,6 +60,8 @@ export default function WriteForm(): JSX.Element {
         setValue={setPassword}
         maxLength={postPolicy.password}
         placeholder={"비밀번호를 입력하세요."}
+        type={"password"}
+        isValidPassword={isValidPassword}
       />
       <TextAreaInstance
         theme={"post"}
@@ -66,17 +71,13 @@ export default function WriteForm(): JSX.Element {
         placeholder={"내용을 입력하세요"}
       />
       <ButtonStyle>
-        <BaseButton
-          theme={"contained"}
-          value={"작성하기"}
-          handleClick={handleClick}
-        />
+        <BaseButton theme={"contained"} value={"작성하기"} type="submit" />
       </ButtonStyle>
     </WrtieFormStyle>
   );
 }
 
-const WrtieFormStyle = styled.div`
+const WrtieFormStyle = styled.form`
   width: 48rem;
   gap: 0.5rem;
   display: flex;

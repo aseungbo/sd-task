@@ -10,7 +10,7 @@ export default function Write(): JSX.Element {
 }
 
 const WriteStyle = styled.section`
-  margin: 2rem 0;
+  margin: 1rem 0;
   display: flex;
   flex-direction: column;
   align-items: center;
